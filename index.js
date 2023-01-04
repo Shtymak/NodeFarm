@@ -1,11 +1,11 @@
 const express = require('express');
 const dotenv = require('dotenv');
+dotenv.config();
 console.log(`Evns:`, {
     REDIS_URL: process.env.REDIS_URL,
     REDIS_PORT: process.env.REDIS_PORT,
     PORT: process.env.PORT,
 });
-dotenv.config();
 const cacheClient = require('./redis');
 const app = express();
 

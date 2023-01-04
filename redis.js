@@ -1,9 +1,13 @@
 const redis = require('redis');
+let redisUrl = 'redis://localhost';
+if (process.env.REDIS_URL) {
+    const urlContains = process.env.REDIS_URL.startsWith('redis://');
+    redisUrl = urlContains
+        ? process.env.REDIS_URL
+        : 'redis://' + process.env.REDIS_URL;
+}
 let options = {
-    url:
-        (process.env.REDIS_URL || 'redis://localhost') +
-        ':' +
-        (process.env.REDIS_PORT || 6379),
+    url: redisUrl + ':' + (process.env.REDIS_PORT || 6379),
 };
 const client = redis.createClient(options);
 
