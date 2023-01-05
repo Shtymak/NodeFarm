@@ -23,6 +23,23 @@ app.get('/set', async (req, res) => {
     const resp = await cacheClient.setEx('redis', 60 * 10, 'Hello World');
     res.send(resp);
 });
+
+app.get('/db/save', async (req, res) => {
+    try {
+        const resp = await pg.query('INSERT INTO test (name) VALUES ($1)', [
+            crypto.randomUUID(),
+        ]);
+        res.send(resp);
+    } catch (e) {
+        console.log(`Error: `, e);
+    }
+});
+
+app.get('/db/get', async (req, res) => {
+    const resp = await pg.query('SELECT * FROM test');
+    if (!resp) return res.send('No data');
+    res.send(resp);
+});
 const boot = async () => {
     try {
         await pg.connect();
