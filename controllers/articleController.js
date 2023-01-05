@@ -3,8 +3,8 @@ const articleService = require('../services/articleService');
 class ArticleController {
     async getAll(req, res, next) {
         try {
-            const articles = await articleService.getArticles(title);
-            res.json(articles);
+            const articles = await articleService.getArticles();
+            res.status(200).send(articles);
         } catch (error) {
             return next(ApiError.BadRequest(error.message));
         }
