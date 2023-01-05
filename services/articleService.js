@@ -1,4 +1,4 @@
-const { Client } = require('pg');
+const client = require('../db');
 const redisCache = require('../redis');
 
 class ArticleService {
@@ -11,10 +11,8 @@ class ArticleService {
                 if (articles) {
                     resolve(JSON.parse(articles));
                 } else {
-                    const client = new Client();
-                    await client.connect();
                     const { rows } = await client.query(
-                        'SELECT * FROM article'
+                        'SELECT * FROM articles'
                     );
                     redisCache.set('articles', JSON.stringify(rows));
                     resolve(rows);
@@ -32,10 +30,8 @@ class ArticleService {
                 if (article) {
                     resolve(JSON.parse(article));
                 } else {
-                    const client = new Client();
-                    await client.connect();
                     const { rows } = await client.query(
-                        'SELECT * FROM article WHERE id = $1',
+                        'SELECT * FROM articles WHERE id = $1',
                         [id]
                     );
                     redisCache.set(`article:${id}`, JSON.stringify(rows[0]));
@@ -47,10 +43,8 @@ class ArticleService {
 
     createArticle(title, content) {
         return new Promise(async (resolve, reject) => {
-            const client = new Client();
-            await client.connect();
             const { rows } = await client.query(
-                'INSERT INTO article (title, content) VALUES ($1, $2) RETURNING *',
+                'INSERT INTO articles (title, content) VALUES ($1, $2) RETURNING *',
                 [title, content]
             );
             redisCache.del('articles');
