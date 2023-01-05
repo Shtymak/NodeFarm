@@ -1,7 +1,7 @@
 const Router = require('express');
 const router = new Router();
-const filmController = require('../controllers/articleController');
-router.get('/all', filmController.getAll);
-router.get('/:id', filmController.getOne);
-router.post('/', filmController.create);
+const articleController = require('../controllers/articleController');
+router.get('/list/all', articleController.getAll);
+router.get('/:id', articleController.getOne);
+router.post('/', articleController.create);
 module.exports = router;
