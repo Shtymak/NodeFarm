@@ -27,7 +27,7 @@ app.get('/set', async (req, res) => {
 app.get('/db/save', async (req, res) => {
     try {
         const resp = await pg.query('INSERT INTO test (name) VALUES ($1)', [
-            crypto.randomUUID(),
+            Date.now(),
         ]);
         res.send(resp);
     } catch (e) {
